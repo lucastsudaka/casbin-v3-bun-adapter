@@ -102,25 +102,28 @@ func (a *bunAdapter) LoadPolicy(model model.Model) error {
 	}
 
 	for _, policy := range policies {
-		if err := loadPolicyRecord(policy, model); err != nil {
+		if err := loadPolicyLine(policy, model); err != nil {
 			return err
 		}
 	}
 
 	return nil
 }
+func loadPolicyLine(line CasbinPolicy, model model.Model) error {
+	var p = []string{line.PType,
+		line.V0, line.V1, line.V2,
+		line.V3, line.V4, line.V5}
 
-func loadPolicyRecord(policy CasbinPolicy, model model.Model) error {
-	pType := policy.PType
-	sec := pType[:1]
-	ok, err := model.HasPolicyEx(sec, pType, policy.filterValues())
+	index := len(p) - 1
+	for p[index] == "" {
+		index--
+	}
+	index += 1
+	p = p[:index]
+	err := persist.LoadPolicyArray(p, model)
 	if err != nil {
 		return err
 	}
-	if ok {
-		return nil
-	}
-	model.AddPolicy(sec, pType, policy.filterValues())
 	return nil
 }
 

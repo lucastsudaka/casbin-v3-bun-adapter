@@ -1,5 +1,7 @@
 # casbin-v3-bun-adapter
 
+go get -u github.com/lucastsudaka/casbin-v3-bun-adapter
+
 ```go
 casbinModel := casbinv3Model.Model{}
 casbinModel.LoadModelFromText(`
@@ -26,4 +28,5 @@ enforcer, _ := casbinv3.NewEnforcer(casbinModel, a)
 ```
 
 ## Credits
+https://github.com/casbin/gorm-adapter
 https://github.com/JunNishimura/casbin-bun-adapter
